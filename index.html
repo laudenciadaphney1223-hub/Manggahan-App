@@ -27,7 +27,7 @@
 <iframe id="app" title="Manggahan Site Performance" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
 <script>
   // ▼▼ Paste your Apps Script Web app URL (ends in /exec) between the quotes ▼▼
-  const APP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+  const APP_URL = "https://script.google.com/macros/s/AKfycbw820-ZuV9tLrDgYfYg-J54hJxF9tVHjy8HEPrtIRA5H90DId68VAn_S7ktQjAd9v6i/exec;
   const f = document.getElementById("app");
   if (APP_URL.startsWith("https://script.google.com/")) { f.src = APP_URL; }
   else { document.querySelector("#splash span").textContent = "Set APP_URL in index.html to your Apps Script web app URL."; }
