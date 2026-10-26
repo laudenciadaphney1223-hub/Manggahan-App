@@ -17,7 +17,7 @@
   body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box}
   #app{border:0;width:100%;height:100%;display:block}
   #splash{position:fixed;inset:0;display:grid;place-items:center;background:#eef5f9;transition:opacity .3s}
-  #splash div{display:flex;flex-direction:column;align-items:center;gap:12px;color:#45555e;font-size:14px}
+  #splash div{display:flex;flex-direction:column;align-items:center;gap:12px;color:#45555e;font-size:14px;text-align:center;padding:0 16px}
   #splash img{width:96px;height:96px;border-radius:20px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
   #splash.hide{opacity:0;pointer-events:none}
 </style>
@@ -27,11 +27,20 @@
 <iframe id="app" title="Manggahan Site Performance" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
 <script>
   // ▼▼ Paste your Apps Script Web app URL (ends in /exec) between the quotes ▼▼
-  const APP_URL = "https://script.google.com/macros/s/AKfycbw820-ZuV9tLrDgYfYg-J54hJxF9tVHjy8HEPrtIRA5H90DId68VAn_S7ktQjAd9v6i/exec;
-  const f = document.getElementById("app");
-  if (APP_URL.startsWith("https://script.google.com/")) { f.src = APP_URL; }
-  else { document.querySelector("#splash span").textContent = "Set APP_URL in index.html to your Apps Script web app URL."; }
-  f.addEventListener("load", () => setTimeout(() => document.getElementById("splash").classList.add("hide"), 300));
+  const APP_URL = "https://script.google.com/macros/s/AKfycbw820-ZuV9tLrDgYfYg-J54hJxF9tVHjy8HEPrtIRA5H90DId68VAn_S7ktQjAd9v6i/exec";
+  const f = document.getElementById("app"), sp = document.getElementById("splash"), msg = document.querySelector("#splash span");
+  const hide = () => sp.classList.add("hide");
+  if (/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec/.test(APP_URL.trim())) {
+    f.src = APP_URL.trim();
+    f.addEventListener("load", () => setTimeout(hide, 300));
+    setTimeout(() => {
+      if (sp.classList.contains("hide")) return;
+      msg.innerHTML = 'Taking longer than usual.<br><a href="' + APP_URL.trim() + '" style="color:#0086bf;font-weight:600">Open the app directly</a> &nbsp;·&nbsp; <a href="#" id="hideSplash" style="color:#0086bf">Hide this screen</a>';
+      document.getElementById("hideSplash").onclick = e => { e.preventDefault(); hide(); };
+    }, 12000);
+  } else {
+    msg.textContent = "The app link in index.html is not an Apps Script /exec link. Edit APP_URL in index.html.";
+  }
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
